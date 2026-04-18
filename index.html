@@ -1,35 +1,785 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css" >
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alata&family=Bodoni+Moda:ital,opsz@0,6..96;1,6..96&family=Caveat&family=Fasthand&family=Fjalla+One&family=Homemade+Apple&family=Nothing+You+Could+Do&family=Rampart+One&family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sarah Burtenshaw — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f4f0;
+      --text: #1a1a18;
+      --text-secondary: #5a5a56;
+      --text-tertiary: #9a9a94;
+      --border: rgba(0,0,0,0.12);
+      --border-hover: rgba(0,0,0,0.28);
+      --accent: #1a1a18;
+      --info-bg: #e6f1fb;
+      --info-text: #0c447c;
+      --max-w: 900px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #141412;
+        --bg-secondary: #1e1e1b;
+        --text: #f0ede6;
+        --text-secondary: #a0a09a;
+        --text-tertiary: #606060;
+        --border: rgba(255,255,255,0.1);
+        --border-hover: rgba(255,255,255,0.28);
+        --accent: #f0ede6;
+        --info-bg: #0c2a44;
+        --info-text: #85b7eb;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0.875rem 0;
+    }
+
+    nav .inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    nav .nav-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    nav .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 5rem 0 3.5rem;
+      border-bottom: 0.5px solid var(--border);
+      margin-bottom: 3rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 6vw, 54px);
+      font-weight: 400;
+      line-height: 1.08;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-bio {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 580px;
+      line-height: 1.8;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 0.5px solid var(--border-hover);
+      background: var(--bg);
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: var(--bg-secondary); }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    .btn-primary:hover { opacity: 0.85; background: var(--text); }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      padding: 1rem 1.125rem;
+    }
+
+    .stat-n {
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1;
+      font-family: 'DM Serif Display', serif;
+    }
+
+    .stat-l {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── ADVANTAGE ── */
+    .advantage {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 3rem;
+      border-left: 3px solid var(--text);
+      animation: fadeUp 0.6s 0.15s ease both;
+    }
+
+    .advantage h3 {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 0.6rem;
+    }
+
+    .advantage p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 680px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    /* ── FILTERS ── */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-btn {
+      font-size: 12px;
+      padding: 5px 14px;
+      border-radius: 8px;
+      border: 0.5px solid var(--border-hover);
+      background: var(--bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: var(--text); color: var(--text); }
+
+    .filter-btn.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    /* ── PROJECT GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      gap: 14px;
+      margin-bottom: 3.5rem;
+    }
+
+    .card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      transition: border-color 0.2s, transform 0.2s;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .card.flagship {
+      border: 2px solid var(--info-text);
+    }
+
+    .flagship-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: var(--info-bg);
+      color: var(--info-text);
+      width: fit-content;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 3px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 0.5px solid var(--border);
+    }
+
+    .cat-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .cat-systems { background: #e6f1fb; color: #0c447c; }
+    .cat-web     { background: #e1f5ee; color: #085041; }
+    .cat-ai      { background: #eeedfe; color: #3c3489; }
+    .cat-algo    { background: #faeeda; color: #633806; }
+    .cat-db      { background: #faece7; color: #712b13; }
+
+    @media (prefers-color-scheme: dark) {
+      .cat-systems { background: #0c2a44; color: #85b7eb; }
+      .cat-web     { background: #04342c; color: #5dcaa5; }
+      .cat-ai      { background: #26215c; color: #afa9ec; }
+      .cat-algo    { background: #412402; color: #fac775; }
+      .cat-db      { background: #4a1b0c; color: #f0997b; }
+    }
+
+    .card-link {
+      font-size: 12px;
+      color: var(--info-text);
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: auto;
+      display: inline-block;
+    }
+
+    .card-link:hover { text-decoration: underline; }
+
+    /* ── SKILLS ── */
+    .skills-section { margin-bottom: 3.5rem; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .sg {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      padding: 1rem 1.125rem;
+    }
+
+    .sg-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 7px;
+    }
+
+    .sg-list {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      border-top: 0.5px solid var(--border);
+      padding: 2.5rem 0 4rem;
+    }
+
+    .contact-grid {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .contact-item a {
+      color: var(--info-text);
+      text-decoration: none;
+    }
+
+    .contact-item a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      border-top: 0.5px solid var(--border);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:nth-child(1)  { animation-delay: 0.05s; }
+    .card:nth-child(2)  { animation-delay: 0.10s; }
+    .card:nth-child(3)  { animation-delay: 0.15s; }
+    .card:nth-child(4)  { animation-delay: 0.20s; }
+    .card:nth-child(5)  { animation-delay: 0.25s; }
+    .card:nth-child(6)  { animation-delay: 0.30s; }
+    .card:nth-child(7)  { animation-delay: 0.35s; }
+    .card:nth-child(8)  { animation-delay: 0.40s; }
+    .card:nth-child(n+9){ animation-delay: 0.45s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .wrapper { padding: 0 1.25rem; }
+      nav .inner { padding: 0 1.25rem; }
+      nav .nav-links { gap: 1rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<div id="outline">  
-    <h1>Sarah Burtenshaw</h1>
-    <h3>Fullstack JavaScript | Python Developer</h3>
-    <hr>
-    <h2>Skills</h2>
-    <p>JavaScript | Python | React | Flask | Node JS | Express | JSON | CORS | SQL | Sequelize |
-        HTML5 | CSS | Git | GitHub | Axios | AWS | Postman </p>
-    <hr>
-    <h2>Projects</h2>
-    <button id="capstoneLink">Capstone Project</button>
-    <img id="images" src="login.png">
-    <img id="images" src="Create account.png".>
-    <img id="images" src="main-page.png">
-<div id="contact">   
-    <h2>Contact Me</h2>
-    <p>Email: slburtenshaw93@gmail.com</p>
-    <button id="linkedin" href="https://www.linkedin.com/in/sarah-burtenshaw-30231480/">LinkedIn</button>
-    <button id="github" href="https://github.com/sburtenshaw93">GitHub</button>
-</div>    
-</div>    
+
+  <!-- NAV -->
+  <nav>
+    <div class="inner">
+      <a class="logo" href="#">Sarah Burtenshaw</a>
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="wrapper">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Sarah Burtenshaw</h1>
+      <p class="hero-bio">
+        Computer Science student at UVU with 8+ years of banking and finance experience.
+        I build across the full stack — from assembly-level systems programming to AI-powered
+        financial tools — with a rare combination of technical depth and real-world domain expertise.
+      </p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="https://github.com/sburtenshaw93" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <a class="btn" href="mailto:slburtenshaw93@gmail.com">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H2a2 2 0 01-2-2V4zm2-1a1 1 0 00-1 1v.217l7 4.2 7-4.2V4a1 1 0 00-1-1H2zm13 2.383l-4.758 2.855L15 11.114V5.383zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 002 13h12a1 1 0 00.966-.739zM1 11.114l4.758-2.876L1 5.383v5.731z"/></svg>
+          Email me
+        </a>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat"><div class="stat-n">20+</div><div class="stat-l">Projects</div></div>
+      <div class="stat"><div class="stat-n">8</div><div class="stat-l">Languages</div></div>
+      <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Yrs in Finance</div></div>
+      <div class="stat"><div class="stat-n">6</div><div class="stat-l">Focus Areas</div></div>
+    </div>
+
+    <!-- ADVANTAGE -->
+    <div class="advantage">
+      <h3>Unique advantage</h3>
+      <p>Most CS graduates understand code. Few understand the financial systems that run the world. With a decade in banking — processing loans, navigating compliance, working inside enterprise financial software — I bring both. I don't just build fintech tools; I understand why they need to exist.</p>
+    </div>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <p class="sec-label">Projects</p>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="filter('all', this)">All</button>
+        <button class="filter-btn" onclick="filter('ai', this)">AI / UX</button>
+        <button class="filter-btn" onclick="filter('systems', this)">Systems</button>
+        <button class="filter-btn" onclick="filter('web', this)">Web</button>
+        <button class="filter-btn" onclick="filter('algo', this)">Algorithms</button>
+        <button class="filter-btn" onclick="filter('db', this)">Databases</button>
+      </div>
+
+      <div class="grid" id="grid">
+
+        <div class="card flagship" data-cat="ai">
+          <span class="flagship-badge">Flagship project</span>
+          <p class="card-title">Minerva — AI Finance Assistant</p>
+          <p class="card-desc">Full UX-driven budgeting app with expense tracking, category budgets, savings goals, and an AI helper that detects spending habits and suggests improvements. Designed in Figma through low→high fidelity iterations with multiple rounds of user testing.</p>
+          <div class="tags">
+            <span class="cat-tag cat-ai">AI / UX</span>
+            <span class="tag">Figma</span><span class="tag">OpenAI API</span>
+            <span class="tag">Plaid API</span><span class="tag">Domain Modeling</span><span class="tag">HCI</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">CPU Scheduling Simulator</p>
+          <p class="card-desc">Simulated FCFS, SJF, SRTF, and Round Robin scheduling algorithms in C++, outputting response time, turnaround time, and wait time for performance comparison.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">C++</span><span class="tag">OS Concepts</span><span class="tag">Algorithms</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">Producer-Consumer Multithreading</p>
+          <p class="card-desc">Three-thread concurrent system using mutex locks for safe execution. Producer factors numbers; consumer outputs results without data races.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">C++</span><span class="tag">Concurrency</span><span class="tag">Mutex</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">Disk Scheduling Simulator</p>
+          <p class="card-desc">Implemented and benchmarked FCFS, SSTF, LOOK, and C-LOOK disk scheduling algorithms with full performance metrics output.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">C++</span><span class="tag">OS</span><span class="tag">Algorithm Comparison</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">Recursive File Size Calculator</p>
+          <p class="card-desc">C++ utility using opendir, readdir, and lstat system calls to recursively traverse directory trees and compute total file sizes.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">C++</span><span class="tag">File Systems</span><span class="tag">Recursion</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">Diffie-Hellman Secure Chat</p>
+          <p class="card-desc">Encrypted client-server messaging app implementing full DH key exchange and AES-GCM encryption for end-to-end secure communication.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">Python</span><span class="tag">Cryptography</span><span class="tag">Networking</span>
+          </div>
+          <a class="card-link" href="https://github.com/sburtenshaw93" target="_blank" rel="noopener">View on GitHub →</a>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">DES Encryption</p>
+          <p class="card-desc">Full Python implementation of the Data Encryption Standard including all 16 Feistel rounds, key scheduling, and permutation tables. Verified against known test vectors.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">Python</span><span class="tag">Cryptography</span><span class="tag">Algorithms</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">LC-3 Assembly Programs</p>
+          <p class="card-desc">Low-level programs performing arithmetic, AND/NOT/OR via De Morgan's Law, memory operations, and parity checking directly in LC-3 assembly language.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">Assembly</span><span class="tag">Bit Manipulation</span><span class="tag">CPU Logic</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="systems">
+          <p class="card-title">Prime Numbers Multithreading</p>
+          <p class="card-desc">High-performance prime number computation using C++ multithreading for parallel execution and optimized throughput benchmarking.</p>
+          <div class="tags">
+            <span class="cat-tag cat-systems">Systems</span>
+            <span class="tag">C++</span><span class="tag">Threading</span><span class="tag">Performance</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="algo">
+          <p class="card-title">Directed Weighted Graph</p>
+          <p class="card-desc">Python implementation of a directed weighted graph with DFS, BFS, and Dijkstra's shortest path algorithm. Outputs results in GraphViz format for visualization.</p>
+          <div class="tags">
+            <span class="cat-tag cat-algo">Algorithms</span>
+            <span class="tag">Python</span><span class="tag">Graph Theory</span><span class="tag">Dijkstra</span><span class="tag">GraphViz</span>
+          </div>
+          <a class="card-link" href="https://github.com/sburtenshaw93" target="_blank" rel="noopener">View on GitHub →</a>
+        </div>
+
+        <div class="card" data-cat="algo">
+          <p class="card-title">Binary Search Tree</p>
+          <p class="card-desc">BST implementation to count character frequencies from text input, combining recursive tree structures with basic natural language processing.</p>
+          <div class="tags">
+            <span class="cat-tag cat-algo">Algorithms</span>
+            <span class="tag">Python</span><span class="tag">Data Structures</span><span class="tag">NLP</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="algo">
+          <p class="card-title">Subset Sum — NP-Completeness</p>
+          <p class="card-desc">Research presentation covering NP-completeness proofs, dynamic programming solutions, and algorithmic tradeoff analysis for the classic Subset Sum problem.</p>
+          <div class="tags">
+            <span class="cat-tag cat-algo">Algorithms</span>
+            <span class="tag">Theory</span><span class="tag">Dynamic Programming</span><span class="tag">Complexity</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="algo">
+          <p class="card-title">Abstract Factory — Drivers System</p>
+          <p class="card-desc">Abstract Factory pattern creating resolution-specific display and print drivers, with Singleton constraint enforcing single-instance runtime configuration.</p>
+          <div class="tags">
+            <span class="cat-tag cat-algo">Design Patterns</span>
+            <span class="tag">Java</span><span class="tag">Abstract Factory</span><span class="tag">Singleton</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="algo">
+          <p class="card-title">Composite Pattern — Directory Traversal</p>
+          <p class="card-desc">Tree-structured directory system supporting list, listall, chdir, count, and countall commands using pure polymorphism — no type checking anywhere.</p>
+          <div class="tags">
+            <span class="cat-tag cat-algo">Design Patterns</span>
+            <span class="tag">Java</span><span class="tag">Composite</span><span class="tag">Recursion</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="db">
+          <p class="card-title">Full Database Design (15–20 Tables)</p>
+          <p class="card-desc">Designed a normalized relational database from scratch: full ER diagram, SQL schema scripts, populated tables, and a complete presentation.</p>
+          <div class="tags">
+            <span class="cat-tag cat-db">Databases</span>
+            <span class="tag">SQL</span><span class="tag">Normalization</span><span class="tag">ER Diagrams</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="db">
+          <p class="card-title">Sakila DVD Rental Analysis</p>
+          <p class="card-desc">Reverse-engineered the full ER diagram of a real-world DVD rental dataset and wrote optimized SQL queries for complex reporting and analysis tasks.</p>
+          <div class="tags">
+            <span class="cat-tag cat-db">Databases</span>
+            <span class="tag">SQL</span><span class="tag">Query Optimization</span><span class="tag">ER Diagrams</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="web">
+          <p class="card-title">Dessert Shop Application</p>
+          <p class="card-desc">Full OOP system with abstract base class, four subclasses, cost/tax logic, terminal UI, PDF receipt generation via ReportLab, and a complete pytest test suite.</p>
+          <div class="tags">
+            <span class="cat-tag cat-web">Web / App</span>
+            <span class="tag">Python</span><span class="tag">OOP</span><span class="tag">Testing</span><span class="tag">PDF</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="web">
+          <p class="card-title">Bank Simulation System</p>
+          <p class="card-desc">OOP banking model with users, accounts, deposit/withdraw logic, aggregate value calculations, and full UML design documentation.</p>
+          <div class="tags">
+            <span class="cat-tag cat-web">Web / App</span>
+            <span class="tag">Python</span><span class="tag">OOP</span><span class="tag">UML</span><span class="tag">Finance Domain</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="web">
+          <p class="card-title">Visitor Form with JS Validation</p>
+          <p class="card-desc">Responsive Flexbox form with custom JavaScript validation, DOM manipulation, and mobile-friendly layout for a polished user experience.</p>
+          <div class="tags">
+            <span class="cat-tag cat-web">Web</span>
+            <span class="tag">JavaScript</span><span class="tag">CSS Flexbox</span><span class="tag">DOM</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="ai">
+          <p class="card-title">Image Processing Suite</p>
+          <p class="card-desc">Python programs applying grayscale, black & white, and sepia filters to images, plus compositing work blending separate images together.</p>
+          <div class="tags">
+            <span class="cat-tag cat-ai">AI / Visual</span>
+            <span class="tag">Python</span><span class="tag">Image Processing</span><span class="tag">File I/O</span>
+          </div>
+        </div>
+
+        <div class="card" data-cat="web">
+          <p class="card-title">Capstone Project</p>
+          <p class="card-desc">Full-stack JavaScript capstone application featuring user authentication (login/account creation) and a multi-page polished interface.</p>
+          <div class="tags">
+            <span class="cat-tag cat-web">Web / App</span>
+            <span class="tag">JavaScript</span><span class="tag">Full Stack</span><span class="tag">Auth</span>
+          </div>
+          <a class="card-link" href="https://github.com/sburtenshaw93/Capstone-Project" target="_blank" rel="noopener">View on GitHub →</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="skills-section">
+      <p class="sec-label">Skills</p>
+      <div class="skills-grid">
+        <div class="sg">
+          <p class="sg-name">Languages</p>
+          <p class="sg-list">Python · JavaScript · C · C++ · SQL · Assembly · HTML5 · CSS · Swift</p>
+        </div>
+        <div class="sg">
+          <p class="sg-name">Frameworks</p>
+          <p class="sg-list">React · Flask · Node.js · Express · Sequelize · SwiftUI</p>
+        </div>
+        <div class="sg">
+          <p class="sg-name">Systems</p>
+          <p class="sg-list">Multithreading · Mutex · OS Scheduling · Cryptography · File Systems</p>
+        </div>
+        <div class="sg">
+          <p class="sg-name">Design Patterns</p>
+          <p class="sg-list">Abstract Factory · Singleton · Composite · MVC · API Design</p>
+        </div>
+        <div class="sg">
+          <p class="sg-name">Tools</p>
+          <p class="sg-list">Git · GitHub · Figma · Xcode · Postman · AWS · ReportLab · GraphViz</p>
+        </div>
+        <div class="sg">
+          <p class="sg-name">Domain</p>
+          <p class="sg-list">Banking & Lending · Compliance · Financial Systems · HCI · User Testing</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-section">
+      <p class="sec-label">Contact</p>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H2a2 2 0 01-2-2V4zm2-1a1 1 0 00-1 1v.217l7 4.2 7-4.2V4a1 1 0 00-1-1H2zm13 2.383l-4.758 2.855L15 11.114V5.383zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 002 13h12a1 1 0 00.966-.739zM1 11.114l4.758-2.876L1 5.383v5.731z"/></svg>
+          <a href="mailto:slburtenshaw93@gmail.com">slburtenshaw93@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          <a href="https://github.com/sburtenshaw93" target="_blank" rel="noopener">github.com/sburtenshaw93</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>© 2026 Sarah Burtenshaw</p>
+  </footer>
+
+  <script>
+    function filter(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.card').forEach(c => {
+        c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'flex' : 'none';
+      });
+    }
+  </script>
+
 </body>
 </html>
