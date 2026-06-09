@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sarah Burtenshaw — Portfolio</title>
-  <meta name="description" content="Sarah Burtenshaw is a Computer Science student at UVU with 8+ years of banking and finance experience, building full-stack applications, AI-powered financial tools, and systems-level software." />
+  <meta name="description" content="Sarah Burtenshaw is an AI Engineer at Halo Compliance and Computer Science student at UVU with 8+ years of banking and finance experience, building agentic AI systems, MCP servers, and full-stack financial tools." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
@@ -264,6 +264,77 @@
       max-width: 680px;
     }
 
+    /* ── EXPERIENCE ── */
+    .experience { margin-bottom: 3.5rem; }
+
+    .exp-card {
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      background: var(--bg);
+    }
+
+    .exp-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .exp-role {
+      font-size: 17px;
+      font-weight: 500;
+      font-family: 'DM Serif Display', serif;
+    }
+
+    .exp-company { color: var(--info-text); font-style: italic; }
+
+    .exp-meta {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .exp-tagline {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.1rem;
+      max-width: 680px;
+    }
+
+    .exp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .exp-list li {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      padding-left: 1.1rem;
+      position: relative;
+    }
+
+    .exp-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--info-text);
+    }
+
+    .exp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
     /* ── SECTION LABEL ── */
     .sec-label {
       font-size: 11px;
@@ -404,6 +475,14 @@
 
     .card-link:hover { text-decoration: underline; }
 
+    .card-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: auto;
+    }
+
+    .card-links .card-link { margin-top: 0; }
+
     /* ── SKILLS ── */
     .skills-section { margin-bottom: 3.5rem; }
 
@@ -503,6 +582,7 @@
     <div class="inner">
       <a class="logo" href="#">Sarah Burtenshaw</a>
       <ul class="nav-links">
+        <li><a href="#experience">Experience</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -523,9 +603,11 @@
         <p class="eyebrow">Portfolio</p>
         <h1>Sarah Burtenshaw</h1>
         <p class="hero-bio">
-          Computer Science student at UVU with 8+ years of banking and finance experience.
-          I build across the full stack — from assembly-level systems programming to AI-powered
-          financial tools — with a rare combination of technical depth and real-world domain expertise.
+          AI Engineer at Halo Compliance, building agentic AI systems for the mortgage
+          compliance industry. Computer Science student at UVU with 8+ years of banking
+          and finance experience — a rare combination of technical depth and real-world
+          domain expertise, spanning everything from assembly-level systems programming
+          to AI-powered financial tools.
         </p>
         <div class="hero-links">
           <a class="btn btn-primary" href="https://github.com/sburtenshaw93" target="_blank" rel="noopener">
@@ -543,7 +625,7 @@
     <!-- STATS -->
     <div class="stats-row">
       <div class="stat"><div class="stat-n">20+</div><div class="stat-l">Projects</div></div>
-      <div class="stat"><div class="stat-n">8</div><div class="stat-l">Languages</div></div>
+      <div class="stat"><div class="stat-n">10+</div><div class="stat-l">Languages</div></div>
       <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Yrs in Finance</div></div>
       <div class="stat"><div class="stat-n">6</div><div class="stat-l">Focus Areas</div></div>
     </div>
@@ -551,8 +633,35 @@
     <!-- ADVANTAGE -->
     <div class="advantage">
       <h3>Unique advantage</h3>
-      <p>Most CS graduates understand code. Few understand the financial systems that run the world. With a decade in banking — processing loans, navigating compliance, working inside enterprise financial software — I bring both. I don't just build fintech tools; I understand why they need to exist.</p>
+      <p>Most engineers learn the domain after they're hired. I lived it first. Eight years in consumer lending — processing loans, navigating compliance, working inside enterprise financial software — means I build AI systems for the mortgage industry with a practitioner's understanding of the rules, the workflows, and the people who use them. I don't just build compliance tools; I've been the person they're built for.</p>
     </div>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="experience">
+      <p class="sec-label">Experience</p>
+      <div class="exp-card">
+        <div class="exp-head">
+          <div class="exp-role">AI Engineer · <span class="exp-company">Halo Compliance</span></div>
+          <div class="exp-meta">2026 — Present</div>
+        </div>
+        <p class="exp-tagline">Building agentic AI systems for the mortgage compliance industry — including MCP servers for Claude and ChatGPT — on a cloud-first, full-stack architecture.</p>
+        <ul class="exp-list">
+          <li>Building AI-driven compliance workflow systems for the mortgage industry using cloud-based architectures and agentic AI workflows.</li>
+          <li>Developing conversational AI agents that guide users through rule-building and compliance configuration through natural language, gathering structured requirements via conversation-driven forms and contextual prompts.</li>
+          <li>Building Model Context Protocol (MCP) servers that connect Claude and ChatGPT to the platform's compliance tooling.</li>
+          <li>Supporting cloud-first AI infrastructure and integrations across modern AI tooling ecosystems.</li>
+          <li>Developing AI-powered support workflows that classify bug reports and feature requests, generate support documentation, and streamline engineering escalation — including automated GitHub issue generation for bug triage and resolution.</li>
+          <li>Performing full-stack bug testing and validation across repositories, reviewing commits for stability, functionality, and regression prevention before release.</li>
+          <li>Collaborating with engineering leadership on AI integrations, platform reliability, testing workflows, and emerging AI capabilities.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="tag">AI Agents</span><span class="tag">MCP</span><span class="tag">Agentic Workflows</span>
+          <span class="tag">Cloud AI Systems</span><span class="tag">AWS</span><span class="tag">TypeScript</span>
+          <span class="tag">Node.js</span><span class="tag">Python</span><span class="tag">Go</span>
+          <span class="tag">GitHub Workflows</span><span class="tag">Conversational AI</span><span class="tag">AI Compliance Automation</span>
+        </div>
+      </div>
+    </section>
 
     <!-- PROJECTS -->
     <section id="projects">
@@ -570,15 +679,29 @@
 
         <div class="card flagship" data-cat="ai">
           <span class="flagship-badge">Flagship project</span>
+          <p class="card-title">Atlas — AI Résumé &amp; Job-Application Builder</p>
+          <p class="card-desc">Full-stack web app that turns a job description and your background into a tailored résumé PDF, cover letter, and company-fit report — with Henry, an AI assistant that proposes edits and re-scores your fit in real time. Dockerized, deployed live, 33 unit tests.</p>
+          <div class="tags">
+            <span class="cat-tag cat-ai">AI / Full Stack</span>
+            <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">SQLite</span>
+            <span class="tag">Puppeteer</span><span class="tag">Docker</span><span class="tag">Claude API</span>
+          </div>
+          <div class="card-links">
+            <a class="card-link" href="https://atlas-7gw5.onrender.com" target="_blank" rel="noopener">Live demo →</a>
+            <a class="card-link" href="https://github.com/sburtenshaw93/atlas" target="_blank" rel="noopener">Source →</a>
+          </div>
+        </div>
+
+        <div class="card" data-cat="ai">
           <p class="card-title">Minerva — AI Finance Assistant</p>
-          <p class="card-desc">Full UX-driven budgeting app with expense tracking, category budgets, savings goals, and an AI helper that detects spending habits and suggests improvements. Designed in Figma through low→high fidelity iterations with multiple rounds of user testing.</p>
+          <p class="card-desc">UX-driven budgeting app with expense tracking, category budgets, savings goals, and an AI helper that detects spending habits and suggests improvements. Designed in Figma with multiple rounds of user testing.</p>
           <div class="tags">
             <span class="cat-tag cat-ai">AI / UX</span>
             <span class="tag">Figma</span><span class="tag">OpenAI API</span>
             <span class="tag">Plaid API</span><span class="tag">Domain Modeling</span><span class="tag">HCI</span>
           </div>
         </div>
-        
+
         <div class="card" data-cat="systems">
           <p class="card-title">CPU Scheduling Simulator</p>
           <p class="card-desc">Simulated FCFS, SJF, SRTF, and Round Robin scheduling algorithms in C++, outputting response time, turnaround time, and wait time for performance comparison.</p>
@@ -590,7 +713,7 @@
 
         <div class="card" data-cat="systems">
           <p class="card-title">Producer-Consumer Multithreading</p>
-          <p class="card-desc">Three-thread concurrent system using mutex locks for safe execution. Producer factors numbers; consumer outputs results without data races.</p>
+          <p class="card-desc">Three-thread concurrent system using mutex locks for safe execution — producer factors numbers while consumer outputs results, with zero data races under load.</p>
           <div class="tags">
             <span class="cat-tag cat-systems">Systems</span>
             <span class="tag">C++</span><span class="tag">Concurrency</span><span class="tag">Mutex</span>
@@ -599,7 +722,7 @@
 
         <div class="card" data-cat="systems">
           <p class="card-title">Disk Scheduling Simulator</p>
-          <p class="card-desc">Implemented and benchmarked FCFS, SSTF, LOOK, and C-LOOK disk scheduling algorithms with full performance metrics output.</p>
+          <p class="card-desc">Implemented and benchmarked FCFS, SSTF, LOOK, and C-LOOK disk scheduling algorithms in C++, comparing seek patterns and total head movement across workloads.</p>
           <div class="tags">
             <span class="cat-tag cat-systems">Systems</span>
             <span class="tag">C++</span><span class="tag">OS</span><span class="tag">Algorithm Comparison</span>
@@ -608,7 +731,7 @@
 
         <div class="card" data-cat="systems">
           <p class="card-title">Recursive File Size Calculator</p>
-          <p class="card-desc">C++ utility using opendir, readdir, and lstat system calls to recursively traverse directory trees and compute total file sizes.</p>
+          <p class="card-desc">C++ utility using opendir, readdir, and lstat system calls to recursively traverse directory trees and compute total file sizes, handling symlinks and nested structures.</p>
           <div class="tags">
             <span class="cat-tag cat-systems">Systems</span>
             <span class="tag">C++</span><span class="tag">File Systems</span><span class="tag">Recursion</span>
@@ -617,7 +740,7 @@
 
         <div class="card" data-cat="systems">
           <p class="card-title">Diffie-Hellman Secure Chat</p>
-          <p class="card-desc">Encrypted client-server messaging app implementing full DH key exchange and AES-GCM encryption for end-to-end secure communication.</p>
+          <p class="card-desc">Encrypted client-server messaging app implementing full Diffie-Hellman key exchange and AES-GCM encryption, performing a complete cryptographic handshake before any message is sent.</p>
           <div class="tags">
             <span class="cat-tag cat-systems">Systems</span>
             <span class="tag">Python</span><span class="tag">Cryptography</span><span class="tag">Networking</span>
@@ -645,7 +768,7 @@
 
         <div class="card" data-cat="systems">
           <p class="card-title">Prime Numbers Multithreading</p>
-          <p class="card-desc">High-performance prime number computation using C++ multithreading for parallel execution and optimized throughput benchmarking.</p>
+          <p class="card-desc">High-performance prime number computation using C++ multithreading, dividing the search space across worker threads for parallel execution and benchmarked throughput gains.</p>
           <div class="tags">
             <span class="cat-tag cat-systems">Systems</span>
             <span class="tag">C++</span><span class="tag">Threading</span><span class="tag">Performance</span>
@@ -664,7 +787,7 @@
 
         <div class="card" data-cat="algo">
           <p class="card-title">Binary Search Tree</p>
-          <p class="card-desc">BST implementation to count character frequencies from text input, combining recursive tree structures with basic natural language processing.</p>
+          <p class="card-desc">BST implementation that counts character frequencies from text input, combining recursive tree structures and traversal with basic natural language processing.</p>
           <div class="tags">
             <span class="cat-tag cat-algo">Algorithms</span>
             <span class="tag">Python</span><span class="tag">Data Structures</span><span class="tag">NLP</span>
@@ -700,7 +823,7 @@
 
         <div class="card" data-cat="db">
           <p class="card-title">Full Database Design (15–20 Tables)</p>
-          <p class="card-desc">Designed a normalized relational database from scratch: full ER diagram, SQL schema scripts, populated tables, and a complete presentation.</p>
+          <p class="card-desc">Designed a normalized relational database from scratch with 15–20 tables: full ER diagram, SQL schema scripts, populated data, and a complete design presentation.</p>
           <div class="tags">
             <span class="cat-tag cat-db">Databases</span>
             <span class="tag">SQL</span><span class="tag">Normalization</span><span class="tag">ER Diagrams</span>
@@ -727,7 +850,7 @@
 
         <div class="card" data-cat="web">
           <p class="card-title">Bank Simulation System</p>
-          <p class="card-desc">OOP banking model with users, accounts, deposit/withdraw logic, aggregate value calculations, and full UML design documentation.</p>
+          <p class="card-desc">OOP banking model with users, accounts, deposit/withdraw logic, and aggregate value calculations across accounts — designed with full UML documentation of class relationships.</p>
           <div class="tags">
             <span class="cat-tag cat-web">Web / App</span>
             <span class="tag">Python</span><span class="tag">OOP</span><span class="tag">UML</span><span class="tag">Finance Domain</span>
@@ -736,7 +859,7 @@
 
         <div class="card" data-cat="web">
           <p class="card-title">Visitor Form with JS Validation</p>
-          <p class="card-desc">Responsive Flexbox form with custom JavaScript validation, DOM manipulation, and mobile-friendly layout for a polished user experience.</p>
+          <p class="card-desc">Responsive Flexbox form with custom JavaScript validation, real-time DOM feedback on user input, and a mobile-friendly layout for a polished user experience.</p>
           <div class="tags">
             <span class="cat-tag cat-web">Web</span>
             <span class="tag">JavaScript</span><span class="tag">CSS Flexbox</span><span class="tag">DOM</span>
@@ -745,7 +868,7 @@
 
         <div class="card" data-cat="ai">
           <p class="card-title">Image Processing Suite</p>
-          <p class="card-desc">Python programs applying grayscale, black & white, and sepia filters to images, plus compositing work blending separate images together.</p>
+          <p class="card-desc">Python programs applying grayscale, black & white, and sepia filters to images, plus compositing work blending separate images together using pixel-level manipulation.</p>
           <div class="tags">
             <span class="cat-tag cat-ai">AI / Visual</span>
             <span class="tag">Python</span><span class="tag">Image Processing</span><span class="tag">File I/O</span>
@@ -754,7 +877,7 @@
 
         <div class="card" data-cat="web">
           <p class="card-title">Capstone Project</p>
-          <p class="card-desc">Full-stack JavaScript capstone application featuring user authentication (login/account creation) and a multi-page polished interface.</p>
+          <p class="card-desc">Full-stack JavaScript capstone application featuring complete user authentication with login and account creation flows, plus a polished multi-page interface.</p>
           <div class="tags">
             <span class="cat-tag cat-web">Web / App</span>
             <span class="tag">JavaScript</span><span class="tag">Full Stack</span><span class="tag">Auth</span>
@@ -771,7 +894,7 @@
       <div class="skills-grid">
         <div class="sg">
           <p class="sg-name">Languages</p>
-          <p class="sg-list">Python · JavaScript · C · C++ · SQL · Assembly · HTML5 · CSS · Swift</p>
+          <p class="sg-list">Python · JavaScript · TypeScript · Go · C · C++ · SQL · Assembly · HTML5 · CSS · Swift</p>
         </div>
         <div class="sg">
           <p class="sg-name">Frameworks</p>
