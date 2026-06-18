@@ -1176,15 +1176,25 @@
     let cwTsWidgetId = null;
     let cwTsResolver = null;
 
+    // Show/hide the little Turnstile box.
+    function cwTsShow(on) {
+      var b = document.getElementById('cwTurnstile');
+      if (b) b.style.display = on ? '' : 'none';
+    }
+
     // Turnstile's script calls this once it finishes loading.
     function cwTurnstileOnload() {
       if (!window.turnstile || CW_TS_SITEKEY.indexOf("PASTE") !== -1) return;
+      cwTsShow(false); // start hidden
       cwTsWidgetId = turnstile.render('#cwTurnstile', {
         sitekey: CW_TS_SITEKEY,
         execution: 'execute',          // only run when we ask for a token
         appearance: 'interaction-only', // invisible unless a challenge is needed
-        callback: function (token) { if (cwTsResolver) { cwTsResolver(token); cwTsResolver = null; } },
-        'error-callback': function () { if (cwTsResolver) { cwTsResolver(''); cwTsResolver = null; } }
+        // Only reveal the box if a real interactive challenge is starting.
+        'before-interactive-callback': function () { cwTsShow(true); },
+        // Once verified (or on error), grab the token and hide the box again.
+        callback: function (token) { cwTsShow(false); if (cwTsResolver) { cwTsResolver(token); cwTsResolver = null; } },
+        'error-callback': function () { cwTsShow(false); if (cwTsResolver) { cwTsResolver(''); cwTsResolver = null; } }
       });
     }
 
@@ -1197,7 +1207,7 @@
         try { turnstile.reset(cwTsWidgetId); } catch (e) {}
         try { turnstile.execute(cwTsWidgetId); } catch (e) { cwTsResolver = null; resolve(''); }
         // Safety net: never hang the chat if Turnstile stalls.
-        setTimeout(function () { if (cwTsResolver) { cwTsResolver(''); cwTsResolver = null; } }, 10000);
+        setTimeout(function () { if (cwTsResolver) { cwTsShow(false); cwTsResolver(''); cwTsResolver = null; } }, 10000);
       });
     }
 
