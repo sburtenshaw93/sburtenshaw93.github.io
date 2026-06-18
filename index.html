@@ -812,6 +812,20 @@
 
         <div class="card flagship" data-cat="ai">
           <span class="flagship-badge">Flagship project</span>
+          <p class="card-title">Themis — AI Deliberation Council</p>
+          <p class="card-desc">Real-time web app where five AI advisor-agents debate a user's hard question over a publish-subscribe message bus — a hand-rolled in-process bus plus an embedded MQTT broker — refereed by a guarded finite state machine. Every message is recorded to an append-only SQLite event store with point-in-time replay, and a pluggable LLM backend swaps between Claude and Ollama by config. Built on native Node.js 22 built-ins; deployed live over HTTPS.</p>
+          <div class="tags">
+            <span class="cat-tag cat-ai">AI / Real-Time</span>
+            <span class="tag">Node.js 22</span><span class="tag">Express</span><span class="tag">WebSocket</span>
+            <span class="tag">MQTT</span><span class="tag">node:sqlite</span><span class="tag">Claude / Ollama</span>
+          </div>
+          <div class="card-links">
+            <a class="card-link" href="https://themis-ul5z.onrender.com" target="_blank" rel="noopener">Live demo →</a>
+          </div>
+        </div>
+
+        <div class="card flagship" data-cat="ai">
+          <span class="flagship-badge">Flagship project</span>
           <p class="card-title">Atlas — AI Résumé &amp; Job-Application Builder</p>
           <p class="card-desc">Full-stack web app that turns a job description and your background into a tailored résumé PDF, cover letter, and company-fit report — with Henry, an AI assistant that proposes edits and re-scores your fit in real time. Dockerized, deployed live, 33 unit tests.</p>
           <div class="tags">
@@ -821,7 +835,6 @@
           </div>
           <div class="card-links">
             <a class="card-link" href="https://atlas-7gw5.onrender.com" target="_blank" rel="noopener">Live demo →</a>
-            <a class="card-link" href="https://github.com/sburtenshaw93/atlas" target="_blank" rel="noopener">Source →</a>
           </div>
         </div>
 
@@ -1107,6 +1120,7 @@
       </div>
       <div class="cw-suggestions" id="cwSuggestions">
         <button class="cw-suggestion" onclick="cwAsk(this.textContent)">What does Sarah do at Halo Compliance?</button>
+        <button class="cw-suggestion" onclick="cwAsk(this.textContent)">Tell me about the Themis project.</button>
         <button class="cw-suggestion" onclick="cwAsk(this.textContent)">Tell me about the Atlas project.</button>
         <button class="cw-suggestion" onclick="cwAsk(this.textContent)">How does her finance background help her as an engineer?</button>
         <button class="cw-suggestion" onclick="cwAsk(this.textContent)">What's her tech stack?</button>
@@ -1147,6 +1161,7 @@ ABOUT SARAH BURTENSHAW:
 - Tech stack: Python, TypeScript, Go, JavaScript, C, C++, SQL, Assembly, Swift. Tools: Node.js, Express, LangGraph, MCP, AWS, Docker, React, Flask, SQLite, Puppeteer, Figma, Git/GitHub.
 
 FLAGSHIP PROJECTS:
+- Themis — a real-time AI deliberation council. Five AI advisor-agents (each with its own persona) debate a user's hard question over a publish-subscribe message bus — a hand-rolled in-process bus plus an embedded, real MQTT broker (aedes) — refereed by a guarded finite state machine. Every message is recorded to an append-only SQLite event store (event sourcing) with point-in-time replay (reconstruct a council's state up to any sequence number). Built on modern Node.js 22 using native built-ins (node:sqlite and the native test runner) for a lean dependency footprint, with a pluggable LLM backend (Strategy pattern + Simple Factory) that swaps between Anthropic Claude and Ollama via one config setting — no SDKs, both integrated by hand with raw fetch. Vanilla-JS glassmorphism front-end (WebSocket live updates, Markdown, Mermaid diagrams, Chart.js). Zero-trust hardening (input sanitization, rate limiting, same-origin checks, security headers). Implements 6 Enterprise Integration Patterns and 6 design patterns (Strategy, Simple Factory, Observer, Memento, Finite State Machine, Event Sourcing). Deployed live on Render over HTTPS. Demo: themis-ul5z.onrender.com
 - Atlas — an AI résumé & job-application builder. Turns a job description plus your background into a tailored résumé PDF, cover letter, and company-fit report. Features "Henry," an AI assistant that proposes accept/reject edits and re-scores fit in real time. Built with Node/Express, SQLite, a provider-agnostic LLM backend (Claude or Ollama), and headless-Chromium PDF rendering. Uses Gang-of-Four patterns (Strategy, Decorator, Simple Factory, Memento) over a Pipes-and-Filters pipeline. Dockerized, deployed live on Render, 33 unit tests. Demo: atlas-7gw5.onrender.com
 - Minerva — an AI finance assistant. UX-driven budgeting app with expense tracking, category budgets, savings goals, and an AI helper that detects spending habits. Designed in Figma with multiple rounds of user testing; explored OpenAI and Plaid APIs.
 - Plus broad CS coursework: systems programming (CPU/disk scheduling simulators, C++ multithreading with mutexes), cryptography (DES, Diffie-Hellman secure chat), algorithms (Dijkstra graphs, BSTs), databases (normalized DB design, SQL), and design patterns (Abstract Factory, Composite).
