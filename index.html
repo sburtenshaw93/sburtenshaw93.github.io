@@ -573,6 +573,126 @@
       nav .nav-links { gap: 1rem; }
       .grid { grid-template-columns: 1fr; }
     }
+
+    /* ══ AI CHAT WIDGET ══ */
+    .chat-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 18px 12px 14px;
+      border-radius: 30px;
+      border: none;
+      background: var(--text);
+      color: var(--bg);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.25s;
+    }
+    .chat-fab:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.24); }
+    .chat-fab.hidden { opacity: 0; pointer-events: none; transform: scale(0.9); }
+    .chat-fab svg { flex-shrink: 0; }
+
+    .chat-panel {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1001;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      height: 560px;
+      max-height: calc(100vh - 48px);
+      border: 0.5px solid var(--border);
+      border-radius: 18px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 16px 50px rgba(0,0,0,0.22);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px) scale(0.97);
+      transform-origin: bottom right;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .chat-panel.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+
+    .cw-head {
+      padding: 1rem 1.25rem;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .cw-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--info-bg); color: var(--info-text);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif; font-size: 17px; flex-shrink: 0;
+    }
+    .cw-head-text { flex: 1; }
+    .cw-head-text h4 { font-size: 15px; font-weight: 500; line-height: 1.2; }
+    .cw-head-text p { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; gap: 5px; }
+    .cw-dot { width: 6px; height: 6px; border-radius: 50%; background: #2ec27e; display: inline-block; }
+    .cw-close {
+      background: none; border: none; color: var(--text-tertiary); cursor: pointer;
+      padding: 4px; border-radius: 6px; display: flex; transition: background 0.15s, color 0.15s;
+    }
+    .cw-close:hover { background: var(--bg-secondary); color: var(--text); }
+
+    .cw-body {
+      flex: 1; overflow-y: auto; padding: 1.25rem;
+      display: flex; flex-direction: column; gap: 0.85rem;
+    }
+    .cw-msg { display: flex; max-width: 88%; animation: cwRise 0.3s ease both; }
+    .cw-msg.user { align-self: flex-end; }
+    .cw-bubble { padding: 0.65rem 0.9rem; border-radius: 14px; font-size: 14px; line-height: 1.55; }
+    .cw-msg.bot .cw-bubble { background: var(--bg-secondary); border-bottom-left-radius: 4px; }
+    .cw-msg.user .cw-bubble { background: var(--text); color: var(--bg); border-bottom-right-radius: 4px; }
+
+    .cw-suggestions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.25rem; }
+    .cw-suggestion {
+      text-align: left; font-family: inherit; font-size: 13px; color: var(--text);
+      background: var(--bg); border: 0.5px solid var(--border-hover); border-radius: 10px;
+      padding: 0.6rem 0.8rem; cursor: pointer; transition: all 0.15s;
+    }
+    .cw-suggestion:hover { background: var(--bg-secondary); border-color: var(--text); }
+
+    .cw-typing { display: flex; gap: 4px; padding: 0.65rem 0.9rem; }
+    .cw-typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--text-tertiary); animation: cwBounce 1.2s infinite; }
+    .cw-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .cw-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    .cw-foot { padding: 0.85rem 1rem; border-top: 0.5px solid var(--border); display: flex; gap: 0.5rem; }
+    .cw-input {
+      flex: 1; border: 0.5px solid var(--border-hover); border-radius: 11px; padding: 0.6rem 0.85rem;
+      font-family: inherit; font-size: 14px; background: var(--bg); color: var(--text);
+      resize: none; outline: none; max-height: 80px; line-height: 1.4;
+    }
+    .cw-input:focus { border-color: var(--text); }
+    .cw-send {
+      width: 40px; height: 40px; border-radius: 11px; border: none; background: var(--text);
+      color: var(--bg); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: opacity 0.15s;
+    }
+    .cw-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .cw-body::-webkit-scrollbar { width: 6px; }
+    .cw-body::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+
+    @keyframes cwRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cwBounce { 0%,60%,100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+    @media (max-width: 600px) {
+      .chat-panel { bottom: 0; right: 0; width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+      .chat-fab { bottom: 16px; right: 16px; }
+    }
   </style>
 </head>
 <body>
@@ -947,6 +1067,158 @@
       document.querySelectorAll('.card').forEach(c => {
         c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'flex' : 'none';
       });
+    }
+  </script>
+
+  <!-- ══ AI CHAT WIDGET ══ -->
+  <button class="chat-fab" id="chatFab" onclick="openChat()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    Ask about me
+  </button>
+
+  <div class="chat-panel" id="chatPanel">
+    <div class="cw-head">
+      <div class="cw-avatar">S</div>
+      <div class="cw-head-text">
+        <h4>Ask about Sarah</h4>
+        <p><span class="cw-dot"></span> AI assistant · powered by Claude</p>
+      </div>
+      <button class="cw-close" onclick="closeChat()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="cw-body" id="cwBody">
+      <div class="cw-msg bot">
+        <div class="cw-bubble">Hi! I'm Sarah's portfolio assistant. Ask me anything about her projects, her work as an AI Engineer, her finance background, or what she's like to work with.</div>
+      </div>
+      <div class="cw-suggestions" id="cwSuggestions">
+        <button class="cw-suggestion" onclick="cwAsk(this.textContent)">What does Sarah do at Halo Compliance?</button>
+        <button class="cw-suggestion" onclick="cwAsk(this.textContent)">Tell me about the Atlas project.</button>
+        <button class="cw-suggestion" onclick="cwAsk(this.textContent)">How does her finance background help her as an engineer?</button>
+        <button class="cw-suggestion" onclick="cwAsk(this.textContent)">What's her tech stack?</button>
+      </div>
+    </div>
+
+    <div class="cw-foot">
+      <textarea class="cw-input" id="cwInput" rows="1" placeholder="Ask a question..."
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();cwSend();}"></textarea>
+      <button class="cw-send" id="cwSend" onclick="cwSend()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────────────────
+    //  CONFIG — point this at your secure proxy in production.
+    //  In the Claude.ai preview, leaving it as the direct API
+    //  URL works because auth is handled for you. On GitHub
+    //  Pages you MUST swap this for your proxy endpoint so your
+    //  API key stays secret (see setup notes).
+    // ─────────────────────────────────────────────────────────
+    const CW_ENDPOINT = "https://sarah-portfolio-ai.github-portfolio.workers.dev";
+
+    const CW_SYSTEM = `You are the friendly AI assistant embedded in Sarah Burtenshaw's professional portfolio website. Visitors (often recruiters or hiring managers) ask you about her. Answer warmly, concisely, and accurately, referring to Sarah as "she." Keep answers to 2-4 sentences unless asked for detail. If you don't know something, say so and suggest they email Sarah directly — never invent facts.
+
+ABOUT SARAH BURTENSHAW:
+- Current role: AI Engineer at Halo Compliance. She builds agentic AI systems for the mortgage compliance industry — including Model Context Protocol (MCP) servers connecting both Claude and ChatGPT to the platform's compliance tooling. Her work includes conversational AI agents that guide users through rule-building and compliance configuration via natural language, cloud-first AI infrastructure, AI-powered support and bug-triage workflows (including automated GitHub issue generation), and full-stack testing and validation.
+- Education: B.S. in Computer Science at Utah Valley University (UVU), graduating August 2026.
+- Background: 8+ years in consumer lending and finance — previously a Senior Financial Service Representative at Mountain America Credit Union, a top-ranked loan officer who trained other staff. This domain expertise is her key differentiator: she understands compliance rules, workflows, and users firsthand.
+- Tech stack: Python, TypeScript, Go, JavaScript, C, C++, SQL, Assembly, Swift. Tools: Node.js, Express, LangGraph, MCP, AWS, Docker, React, Flask, SQLite, Puppeteer, Figma, Git/GitHub.
+
+FLAGSHIP PROJECTS:
+- Atlas — an AI résumé & job-application builder. Turns a job description plus your background into a tailored résumé PDF, cover letter, and company-fit report. Features "Henry," an AI assistant that proposes accept/reject edits and re-scores fit in real time. Built with Node/Express, SQLite, a provider-agnostic LLM backend (Claude or Ollama), and headless-Chromium PDF rendering. Uses Gang-of-Four patterns (Strategy, Decorator, Simple Factory, Memento) over a Pipes-and-Filters pipeline. Dockerized, deployed live on Render, 33 unit tests. Demo: atlas-7gw5.onrender.com
+- Minerva — an AI finance assistant. UX-driven budgeting app with expense tracking, category budgets, savings goals, and an AI helper that detects spending habits. Designed in Figma with multiple rounds of user testing; explored OpenAI and Plaid APIs.
+- Plus broad CS coursework: systems programming (CPU/disk scheduling simulators, C++ multithreading with mutexes), cryptography (DES, Diffie-Hellman secure chat), algorithms (Dijkstra graphs, BSTs), databases (normalized DB design, SQL), and design patterns (Abstract Factory, Composite).
+
+PERSONALITY / WORKING STYLE:
+- Loves design patterns and clean architecture; thinks like a software engineer, not just a coder.
+- Structured, detail-oriented learner who favors analogies, visual organization, and hands-on iteration.
+- Bridges two worlds — deep financial domain knowledge and modern AI engineering — which is rare.
+- Warm, collaborative, and practical.
+
+Keep it professional and friendly. Don't share private personal details (family, home address, etc.). If asked something off-topic or inappropriate, gently redirect to her work. Contact: slburtenshaw93@gmail.com · github.com/sburtenshaw93.`;
+
+    const cwHistory = [];
+    const cwBody = document.getElementById('cwBody');
+    const cwInput = document.getElementById('cwInput');
+    const cwSendBtn = document.getElementById('cwSend');
+    const chatFab = document.getElementById('chatFab');
+    const chatPanel = document.getElementById('chatPanel');
+
+    function openChat() {
+      chatPanel.classList.add('open');
+      chatFab.classList.add('hidden');
+      setTimeout(() => cwInput.focus(), 250);
+    }
+    function closeChat() {
+      chatPanel.classList.remove('open');
+      chatFab.classList.remove('hidden');
+    }
+
+    function cwAddMessage(text, who) {
+      const msg = document.createElement('div');
+      msg.className = 'cw-msg ' + who;
+      const bubble = document.createElement('div');
+      bubble.className = 'cw-bubble';
+      bubble.textContent = text;
+      msg.appendChild(bubble);
+      cwBody.appendChild(msg);
+      cwBody.scrollTop = cwBody.scrollHeight;
+    }
+    function cwShowTyping() {
+      const msg = document.createElement('div');
+      msg.className = 'cw-msg bot';
+      msg.id = 'cwTyping';
+      msg.innerHTML = '<div class="cw-typing"><span></span><span></span><span></span></div>';
+      cwBody.appendChild(msg);
+      cwBody.scrollTop = cwBody.scrollHeight;
+    }
+    function cwHideTyping() { const t = document.getElementById('cwTyping'); if (t) t.remove(); }
+
+    function cwAsk(text) {
+      const s = document.getElementById('cwSuggestions');
+      if (s) s.remove();
+      cwInput.value = text;
+      cwSend();
+    }
+
+    async function cwSend() {
+      const text = cwInput.value.trim();
+      if (!text) return;
+      const s = document.getElementById('cwSuggestions');
+      if (s) s.remove();
+
+      cwAddMessage(text, 'user');
+      cwHistory.push({ role: 'user', content: text });
+      cwInput.value = '';
+      cwSendBtn.disabled = true;
+      cwShowTyping();
+
+      try {
+        const response = await fetch(CW_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-6",
+            max_tokens: 1000,
+            system: CW_SYSTEM,
+            messages: cwHistory
+          })
+        });
+        const data = await response.json();
+        const reply = data.content.filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
+        cwHideTyping();
+        cwAddMessage(reply || "Sorry, I couldn't generate a response. Try again?", 'bot');
+        cwHistory.push({ role: 'assistant', content: reply });
+      } catch (err) {
+        cwHideTyping();
+        cwAddMessage("Hmm, I hit a connection error. Try again in a moment, or email Sarah at slburtenshaw93@gmail.com.", 'bot');
+      } finally {
+        cwSendBtn.disabled = false;
+        cwInput.focus();
+      }
     }
   </script>
 
