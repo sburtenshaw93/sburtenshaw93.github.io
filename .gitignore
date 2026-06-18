@@ -1,0 +1,10 @@
+# macOS clutter
+.DS_Store
+**/.DS_Store
+
+# Secrets / environment
+.env
+.env.*
+
+# Dependencies
+node_modules/
