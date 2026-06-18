@@ -684,6 +684,7 @@
     .cw-typing span:nth-child(2) { animation-delay: 0.2s; }
     .cw-typing span:nth-child(3) { animation-delay: 0.4s; }
 
+    #cwTurnstile:not(:empty) { display: flex; justify-content: center; padding: 0.5rem 1rem 0; }
     .cw-foot { padding: 0.85rem 1rem; border-top: 0.5px solid var(--border); display: flex; gap: 0.5rem; }
     .cw-input {
       flex: 1; border: 0.5px solid var(--border-hover); border-radius: 11px; padding: 0.6rem 0.85rem;
@@ -1137,6 +1138,7 @@
       </div>
     </div>
 
+    <div id="cwTurnstile"></div>
     <div class="cw-foot">
       <textarea class="cw-input" id="cwInput" rows="1" placeholder="Ask a question..."
         onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();cwSend();}"></textarea>
@@ -1165,6 +1167,39 @@
     //  API key stays secret (see setup notes).
     // ─────────────────────────────────────────────────────────
     const CW_ENDPOINT = "https://sarah-portfolio-ai.github-portfolio.workers.dev";
+
+    // ── Cloudflare Turnstile (bot protection) ──
+    // Paste your widget's SITE key below after creating it in the Cloudflare
+    // dashboard. Until a real key is in, Turnstile stays OFF and the chat
+    // works exactly as before. The matching SECRET key lives in the Worker.
+    const CW_TS_SITEKEY = "0x4AAAAAADnXCvCIcyJnBGr-";
+    let cwTsWidgetId = null;
+    let cwTsResolver = null;
+
+    // Turnstile's script calls this once it finishes loading.
+    function cwTurnstileOnload() {
+      if (!window.turnstile || CW_TS_SITEKEY.indexOf("PASTE") !== -1) return;
+      cwTsWidgetId = turnstile.render('#cwTurnstile', {
+        sitekey: CW_TS_SITEKEY,
+        execution: 'execute',          // only run when we ask for a token
+        appearance: 'interaction-only', // invisible unless a challenge is needed
+        callback: function (token) { if (cwTsResolver) { cwTsResolver(token); cwTsResolver = null; } },
+        'error-callback': function () { if (cwTsResolver) { cwTsResolver(''); cwTsResolver = null; } }
+      });
+    }
+
+    // Resolves to a fresh, single-use token — or '' if Turnstile isn't
+    // configured (so the request still goes through).
+    function cwGetToken() {
+      if (cwTsWidgetId === null || !window.turnstile) return Promise.resolve('');
+      return new Promise(function (resolve) {
+        cwTsResolver = resolve;
+        try { turnstile.reset(cwTsWidgetId); } catch (e) {}
+        try { turnstile.execute(cwTsWidgetId); } catch (e) { cwTsResolver = null; resolve(''); }
+        // Safety net: never hang the chat if Turnstile stalls.
+        setTimeout(function () { if (cwTsResolver) { cwTsResolver(''); cwTsResolver = null; } }, 10000);
+      });
+    }
 
     const CW_SYSTEM = `You are the friendly AI assistant embedded in Sarah Burtenshaw's professional portfolio website. Visitors (often recruiters or hiring managers) ask you about her. Answer warmly, concisely, and accurately, referring to Sarah as "she." Keep answers to 2-4 sentences unless asked for detail. If you don't know something, say so and suggest they email Sarah directly — never invent facts.
 
@@ -1251,6 +1286,7 @@ Keep it professional and friendly. Don't share private personal details (family,
       cwShowTyping();
 
       try {
+        const tsToken = await cwGetToken();
         const response = await fetch(CW_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1258,7 +1294,8 @@ Keep it professional and friendly. Don't share private personal details (family,
             model: "claude-sonnet-4-6",
             max_tokens: 1000,
             system: CW_SYSTEM,
-            messages: cwHistory
+            messages: cwHistory,
+            turnstileToken: tsToken
           })
         });
         const data = await response.json();
@@ -1275,6 +1312,10 @@ Keep it professional and friendly. Don't share private personal details (family,
       }
     }
   </script>
+
+  <!-- Cloudflare Turnstile. Loaded AFTER the widget script so its onload
+       callback (cwTurnstileOnload) is already defined when this runs. -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=cwTurnstileOnload&render=explicit" async defer></script>
 
 </body>
 </html>
