@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sarah Burtenshaw — Portfolio</title>
-  <meta name="description" content="Sarah Burtenshaw is an AI Engineer at Halo Compliance and Computer Science student at UVU with 8+ years of banking and finance experience, building agentic AI systems, MCP servers, and full-stack financial tools." />
+  <meta name="description" content="Sarah Burtenshaw is an AI Engineer at Halo Compliance and a Computer Science graduate of UVU with 8+ years of banking and finance experience, building agentic AI systems, MCP servers, and full-stack financial tools." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
@@ -25,8 +25,11 @@
       --max-w: 900px;
     }
 
+    /* Dark palette, defined once and applied in two situations:
+       1. the visitor's OS is dark AND they haven't forced light  ("System")
+       2. the visitor has explicitly chosen dark                  ("Dark")   */
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
         --bg: #141412;
         --bg-secondary: #1e1e1b;
         --text: #f0ede6;
@@ -38,6 +41,19 @@
         --info-bg: #0c2a44;
         --info-text: #85b7eb;
       }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #141412;
+      --bg-secondary: #1e1e1b;
+      --text: #f0ede6;
+      --text-secondary: #a0a09a;
+      --text-tertiary: #606060;
+      --border: rgba(255,255,255,0.1);
+      --border-hover: rgba(255,255,255,0.28);
+      --accent: #f0ede6;
+      --info-bg: #0c2a44;
+      --info-text: #85b7eb;
     }
 
     html { scroll-behavior: smooth; }
@@ -98,6 +114,50 @@
     }
 
     nav .nav-links a:hover { color: var(--text); }
+
+    /* Theme toggle — cycles Light → Dark → System */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.28rem 0.7rem;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .theme-toggle:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--text);
+      outline-offset: 2px;
+    }
+
+    .theme-toggle svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Show only the icon matching the active mode */
+    .theme-toggle [data-icon] { display: none; }
+    :root:not([data-theme]) .theme-toggle [data-icon="system"],
+    :root[data-theme="light"] .theme-toggle [data-icon="light"],
+    :root[data-theme="dark"]  .theme-toggle [data-icon="dark"] { display: block; }
+
+    @media (max-width: 560px) {
+      .theme-toggle .theme-label { display: none; }
+      .theme-toggle { padding: 0.28rem 0.5rem; }
+    }
 
     /* ── HERO ── */
     .hero {
@@ -334,6 +394,46 @@
     }
 
     .exp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .demo-note {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      line-height: 1.4;
+    }
+
+    .card-links { flex-wrap: wrap; align-items: baseline; gap: 0.5rem 0.9rem; }
+
+    /* Sub-headings inside the experience card ("How I work", "By the numbers") */
+    .exp-subhead {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--text-tertiary);
+      margin: 0.4rem 0 0.7rem;
+    }
+
+    .exp-note {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.6;
+      margin: 0.7rem 0 1.25rem;
+    }
+
+    /* The experience card reuses .stats-row; give it breathing room there */
+    .exp-card .stats-row { margin: 0 0 0.2rem; }
+
+    .exp-list li strong { color: var(--text); font-weight: 500; }
+
+    .exp-list li code,
+    .exp-note code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.92em;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.05em 0.32em;
+    }
 
     /* ── SECTION LABEL ── */
     .sec-label {
@@ -710,6 +810,19 @@
       .chat-fab { bottom: 16px; right: 16px; }
     }
   </style>
+
+  <!-- Applies the saved theme BEFORE first paint, so there's no flash of the
+       wrong colours on load. Runs synchronously and deliberately early. -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'light' || saved === 'dark') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) { /* private mode / storage blocked — fall back to System */ }
+    })();
+  </script>
 </head>
 <body>
 
@@ -719,9 +832,18 @@
       <a class="logo" href="#">Sarah Burtenshaw</a>
       <ul class="nav-links">
         <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Change colour theme">
+            <svg data-icon="light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg data-icon="dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            <svg data-icon="system" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span class="theme-label">System</span>
+          </button>
+        </li>
       </ul>
     </div>
   </nav>
@@ -740,7 +862,7 @@
         <h1>Sarah Burtenshaw</h1>
         <p class="hero-bio">
           AI Engineer at Halo Compliance, building agentic AI systems for the mortgage
-          compliance industry. Computer Science student at UVU with 8+ years of banking
+          compliance industry. Computer Science graduate of UVU with 8+ years of banking
           and finance experience — a rare combination of technical depth and real-world
           domain expertise, spanning everything from assembly-level systems programming
           to AI-powered financial tools.
@@ -764,10 +886,10 @@
 
     <!-- STATS -->
     <div class="stats-row">
-      <div class="stat"><div class="stat-n">20+</div><div class="stat-l">Projects</div></div>
-      <div class="stat"><div class="stat-n">10+</div><div class="stat-l">Languages</div></div>
       <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Yrs in Finance</div></div>
-      <div class="stat"><div class="stat-n">6</div><div class="stat-l">Focus Areas</div></div>
+      <div class="stat"><div class="stat-n">4</div><div class="stat-l">Languages in Production</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">AI Systems Built</div></div>
+      <div class="stat"><div class="stat-n">2026</div><div class="stat-l">B.S. Computer Science</div></div>
     </div>
 
     <!-- ADVANTAGE -->
@@ -782,23 +904,57 @@
       <div class="exp-card">
         <div class="exp-head">
           <div class="exp-role">AI Engineer · <span class="exp-company">Halo Compliance</span></div>
-          <div class="exp-meta">2026 — Present</div>
+          <div class="exp-meta">May 2026 — Present</div>
         </div>
-        <p class="exp-tagline">Building agentic AI systems for the mortgage compliance industry — including MCP servers for Claude and ChatGPT — on a cloud-first, full-stack architecture.</p>
+        <p class="exp-tagline">Halo Compliance checks mortgage marketing material against regulation — a compliance officer uploads a flyer, a social post, or a rate sheet, and Halo says what's wrong with it and why, in plain language. I work across the stack: the React app officers use, the Go services that run the checks, the Python AI agent that reads the rules a compiler can't, and the Terraform that runs it on AWS.</p>
         <ul class="exp-list">
-          <li>Building AI-driven compliance workflow systems for the mortgage industry using cloud-based architectures and agentic AI workflows.</li>
-          <li>Developing conversational AI agents that guide users through rule-building and compliance configuration through natural language, gathering structured requirements via conversation-driven forms and contextual prompts.</li>
-          <li>Building Model Context Protocol (MCP) servers that connect Claude and ChatGPT to the platform's compliance tooling.</li>
-          <li>Supporting cloud-first AI infrastructure and integrations across modern AI tooling ecosystems.</li>
-          <li>Developing AI-powered support workflows that classify bug reports and feature requests, generate support documentation, and streamline engineering escalation — including automated GitHub issue generation for bug triage and resolution.</li>
-          <li>Performing full-stack bug testing and validation across repositories, reviewing commits for stability, functionality, and regression prevention before release.</li>
-          <li>Collaborating with engineering leadership on AI integrations, platform reliability, testing workflows, and emerging AI capabilities.</li>
+          <li><strong>Rule compiler — plain English in, executable rules out.</strong> Officers write rules the way they talk ("every ad that mentions a rate has to show the APR"); I make them run. Taught the compiler to handle placeholder formats in natural phrasing, referenced collections of accepted values, format rules nested in conditions, and unquoted license numbers — plus rename safety, so a renamed rule keeps matching through an alias instead of silently going dead. Built a Given / When / Then view generated from the compiler's own structure, so officers can see what a rule will do before it fires, and unparseable rules say so rather than failing quietly.</li>
+          <li><strong>Review canvas.</strong> Where officers review a document, and most of my UI work. Entity highlighting that shows a term everywhere it appears — in the rule, the reference, and the region of the file — a four-part finding layout, highlights for evidence that <em>passed</em> rather than only what failed, and finding copy rewritten for non-technical readers: "We looked for the APR and didn't find it," not a validation error.</li>
+          <li><strong>Document understanding and OCR.</strong> Rules only work if the document can be read. Deterministic testimonial-shape detection, tolerance for unicode homoglyphs and invisible characters (the trick used to slip text past a checker), measured font-size parity for disclosure-size rules, and low-confidence OCR regions surfaced so officers know where the machine was unsure. Traced a silent whole-document OCR failure to an <code>omitempty</code> tag stripping a 0.0 confidence score.</li>
+          <li><strong>MCP server.</strong> A Go MCP server exposing around 96 tools, letting an AI assistant read and edit the rulebook. Held to a strict passthrough design: no authorisation or credentials in the layer, and auth-determining fields such as tenant come from the token, never from tool arguments.</li>
+          <li><strong>Release engineering and infrastructure.</strong> Made the git tag the only path to deploy, replacing manual <code>aws s3 sync</code> and console clicks. Fixed the rules-engine deploy chain end to end, a production CSP that blocked collateral from loading, and a Lambda crash-looping behind a 232-byte placeholder zip a deploy step never replaced. IAM policies enumerate their actions — no wildcards, for SOC 2.</li>
+        </ul>
+
+        <p class="exp-subhead">How I work</p>
+        <ul class="exp-list">
+          <li>Start from the issue, not the code — I don't touch production code until I can state the root cause, the existing pattern I'll follow, and what I expect to break. Then one thin slice: failing test, fix, passing test.</li>
+          <li>Every change goes through our SDLC gates — plan, test, build, commit — each writing an evidence artifact. A red gate stops the work; I don't skip a git hook to get a commit through.</li>
+          <li>I run the product against real customer rulebooks and file an issue for every defect I hit — a lot of my shipped work started that way. Around 240 test files written or changed so far.</li>
+          <li>I don't call something fixed, tested, or deployed unless I can show the command and the output that proves it. If I haven't verified it, I say so.</li>
+        </ul>
+
+        <div class="exp-tags">
+          <span class="tag">TypeScript</span><span class="tag">Go</span><span class="tag">Python</span>
+          <span class="tag">React</span><span class="tag">Terraform</span><span class="tag">AWS</span>
+          <span class="tag">Lambda</span><span class="tag">DynamoDB</span><span class="tag">CloudFront</span>
+          <span class="tag">LangGraph</span><span class="tag">AWS Bedrock</span><span class="tag">MCP</span>
+          <span class="tag">OCR</span><span class="tag">SOC 2</span><span class="tag">Monorepo (moon, pnpm)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="experience">
+      <p class="sec-label">Education</p>
+      <div class="exp-card">
+        <div class="exp-head">
+          <div class="exp-role">B.S. Computer Science · <span class="exp-company">Utah Valley University</span></div>
+          <div class="exp-meta">Completed August 2026</div>
+        </div>
+        <p class="exp-tagline">Studied while working full time in lending, then in engineering — the degree ran alongside the eight years of finance experience rather than before it.</p>
+        <ul class="exp-list">
+          <li><strong>Capstone — Minerva.</strong> A personal-finance PWA with an AI assistant, built to production standards: passwordless WebAuthn auth, an OWASP Top 10:2025 hardening pass, WCAG 2.1 AA, and a test-gated CI/CD pipeline. Demoed live in class, August 2026.</li>
+          <li><strong>Systems.</strong> CPU and disk scheduling simulators in C++, and a three-thread producer–consumer system using mutex locks with no data races under load.</li>
+          <li><strong>Cryptography.</strong> DES implemented from the specification, and a Diffie–Hellman key-exchange secure chat.</li>
+          <li><strong>Algorithms and data structures.</strong> Dijkstra shortest-path over weighted graphs, binary search trees, and complexity analysis.</li>
+          <li><strong>Databases.</strong> Normalised schema design and SQL, carried directly into the Postgres data layer behind Minerva.</li>
+          <li><strong>Design patterns.</strong> Abstract Factory and Composite in coursework — the same patterns that show up deliberately in Themis and Atlas.</li>
         </ul>
         <div class="exp-tags">
-          <span class="tag">AI Agents</span><span class="tag">MCP</span><span class="tag">Agentic Workflows</span>
-          <span class="tag">Cloud AI Systems</span><span class="tag">AWS</span><span class="tag">TypeScript</span>
-          <span class="tag">Node.js</span><span class="tag">Python</span><span class="tag">Go</span>
-          <span class="tag">GitHub Workflows</span><span class="tag">Conversational AI</span><span class="tag">AI Compliance Automation</span>
+          <span class="tag">C++</span><span class="tag">C</span><span class="tag">Swift</span>
+          <span class="tag">SQL</span><span class="tag">Assembly</span>
+          <span class="tag">Operating Systems</span><span class="tag">Cryptography</span>
+          <span class="tag">Algorithms</span><span class="tag">Design Patterns</span>
         </div>
       </div>
     </section>
@@ -810,12 +966,26 @@
         <button class="filter-btn active" onclick="filter('all', this)">All</button>
         <button class="filter-btn" onclick="filter('ai', this)">AI / UX</button>
         <button class="filter-btn" onclick="filter('systems', this)">Systems</button>
-        <button class="filter-btn" onclick="filter('web', this)">Web</button>
         <button class="filter-btn" onclick="filter('algo', this)">Algorithms</button>
         <button class="filter-btn" onclick="filter('db', this)">Databases</button>
       </div>
 
       <div class="grid" id="grid">
+
+        <div class="card flagship" data-cat="ai">
+          <span class="flagship-badge">Flagship project</span>
+          <p class="card-title">Minerva — AI-Assisted Budgeting</p>
+          <p class="card-desc">A personal-finance PWA built around <strong>Henry</strong>, an assistant that acts rather than comments — flagging warnings and forecasts, splitting receipts into per-category entries, proposing budget rebalances, and answering "can I afford this?" from real data. Henry runs on a <strong>propose → approve → log</strong> contract: the model's output is never trusted blindly, a server-side validator checks every proposed action, and it fails closed to a deterministic rules engine. Every insight carries a "Why this?" basis, so nothing changes silently.</p>
+          <p class="card-desc">Node/Express + Postgres behind 30+ owner-scoped endpoints with a durable per-user audit trail. Sign-in is <strong>passwordless</strong> — passkey-only WebAuthn with hashed recovery codes — hardened against the OWASP Top 10:2025, with Plaid access tokens stored AES-256-GCM encrypted. Ships as an installable PWA with a hand-written service worker and Background Sync, so expenses entered offline flush on reconnect. <strong>596 Vitest tests across 36 files</strong> gate every deploy through GitHub Actions, and it meets WCAG 2.1 AA at Lighthouse Accessibility 100.</p>
+          <div class="tags">
+            <span class="cat-tag cat-ai">AI / Full-Stack</span>
+            <span class="tag">React</span><span class="tag">Node/Express</span>
+            <span class="tag">Postgres</span><span class="tag">WebAuthn</span>
+            <span class="tag">Plaid API</span><span class="tag">PWA / Service Worker</span>
+            <span class="tag">Vitest</span><span class="tag">CI/CD</span>
+            <span class="tag">WCAG 2.1 AA</span>
+          </div>
+        </div>
 
         <div class="card flagship" data-cat="ai">
           <span class="flagship-badge">Flagship project</span>
@@ -828,6 +998,7 @@
           </div>
           <div class="card-links">
             <a class="card-link" href="https://themis-ul5z.onrender.com" target="_blank" rel="noopener">Live demo →</a>
+            <span class="demo-note">free host — may take ~30s to wake</span>
           </div>
         </div>
 
@@ -842,52 +1013,7 @@
           </div>
           <div class="card-links">
             <a class="card-link" href="https://atlas-7gw5.onrender.com" target="_blank" rel="noopener">Live demo →</a>
-          </div>
-        </div>
-
-        <div class="card" data-cat="ai">
-          <p class="card-title">Minerva — AI Finance Assistant</p>
-          <p class="card-desc">UX-driven budgeting app with expense tracking, category budgets, savings goals, and an AI helper that detects spending habits and suggests improvements. Designed in Figma with multiple rounds of user testing.</p>
-          <div class="tags">
-            <span class="cat-tag cat-ai">AI / UX</span>
-            <span class="tag">Figma</span><span class="tag">OpenAI API</span>
-            <span class="tag">Plaid API</span><span class="tag">Domain Modeling</span><span class="tag">HCI</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="systems">
-          <p class="card-title">CPU Scheduling Simulator</p>
-          <p class="card-desc">Simulated FCFS, SJF, SRTF, and Round Robin scheduling algorithms in C++, outputting response time, turnaround time, and wait time for performance comparison.</p>
-          <div class="tags">
-            <span class="cat-tag cat-systems">Systems</span>
-            <span class="tag">C++</span><span class="tag">OS Concepts</span><span class="tag">Algorithms</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="systems">
-          <p class="card-title">Producer-Consumer Multithreading</p>
-          <p class="card-desc">Three-thread concurrent system using mutex locks for safe execution — producer factors numbers while consumer outputs results, with zero data races under load.</p>
-          <div class="tags">
-            <span class="cat-tag cat-systems">Systems</span>
-            <span class="tag">C++</span><span class="tag">Concurrency</span><span class="tag">Mutex</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="systems">
-          <p class="card-title">Disk Scheduling Simulator</p>
-          <p class="card-desc">Implemented and benchmarked FCFS, SSTF, LOOK, and C-LOOK disk scheduling algorithms in C++, comparing seek patterns and total head movement across workloads.</p>
-          <div class="tags">
-            <span class="cat-tag cat-systems">Systems</span>
-            <span class="tag">C++</span><span class="tag">OS</span><span class="tag">Algorithm Comparison</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="systems">
-          <p class="card-title">Recursive File Size Calculator</p>
-          <p class="card-desc">C++ utility using opendir, readdir, and lstat system calls to recursively traverse directory trees and compute total file sizes, handling symlinks and nested structures.</p>
-          <div class="tags">
-            <span class="cat-tag cat-systems">Systems</span>
-            <span class="tag">C++</span><span class="tag">File Systems</span><span class="tag">Recursion</span>
+            <span class="demo-note">free host — may take ~30s to wake</span>
           </div>
         </div>
 
@@ -910,67 +1036,12 @@
           </div>
         </div>
 
-        <div class="card" data-cat="systems">
-          <p class="card-title">LC-3 Assembly Programs</p>
-          <p class="card-desc">Low-level programs performing arithmetic, AND/NOT/OR via De Morgan's Law, memory operations, and parity checking directly in LC-3 assembly language.</p>
-          <div class="tags">
-            <span class="cat-tag cat-systems">Systems</span>
-            <span class="tag">Assembly</span><span class="tag">Bit Manipulation</span><span class="tag">CPU Logic</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="systems">
-          <p class="card-title">Prime Numbers Multithreading</p>
-          <p class="card-desc">High-performance prime number computation using C++ multithreading, dividing the search space across worker threads for parallel execution and benchmarked throughput gains.</p>
-          <div class="tags">
-            <span class="cat-tag cat-systems">Systems</span>
-            <span class="tag">C++</span><span class="tag">Threading</span><span class="tag">Performance</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="algo">
-          <p class="card-title">Directed Weighted Graph</p>
-          <p class="card-desc">Python implementation of a directed weighted graph with DFS, BFS, and Dijkstra's shortest path algorithm. Outputs results in GraphViz format for visualization.</p>
-          <div class="tags">
-            <span class="cat-tag cat-algo">Algorithms</span>
-            <span class="tag">Python</span><span class="tag">Graph Theory</span><span class="tag">Dijkstra</span><span class="tag">GraphViz</span>
-          </div>
-          <a class="card-link" href="https://github.com/sarahholloway993" target="_blank" rel="noopener">View on GitHub →</a>
-        </div>
-
-        <div class="card" data-cat="algo">
-          <p class="card-title">Binary Search Tree</p>
-          <p class="card-desc">BST implementation that counts character frequencies from text input, combining recursive tree structures and traversal with basic natural language processing.</p>
-          <div class="tags">
-            <span class="cat-tag cat-algo">Algorithms</span>
-            <span class="tag">Python</span><span class="tag">Data Structures</span><span class="tag">NLP</span>
-          </div>
-        </div>
-
         <div class="card" data-cat="algo">
           <p class="card-title">Subset Sum — NP-Completeness</p>
           <p class="card-desc">Research presentation covering NP-completeness proofs, dynamic programming solutions, and algorithmic tradeoff analysis for the classic Subset Sum problem.</p>
           <div class="tags">
             <span class="cat-tag cat-algo">Algorithms</span>
             <span class="tag">Theory</span><span class="tag">Dynamic Programming</span><span class="tag">Complexity</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="algo">
-          <p class="card-title">Abstract Factory — Drivers System</p>
-          <p class="card-desc">Abstract Factory pattern creating resolution-specific display and print drivers, with Singleton constraint enforcing single-instance runtime configuration.</p>
-          <div class="tags">
-            <span class="cat-tag cat-algo">Design Patterns</span>
-            <span class="tag">Java</span><span class="tag">Abstract Factory</span><span class="tag">Singleton</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="algo">
-          <p class="card-title">Composite Pattern — Directory Traversal</p>
-          <p class="card-desc">Tree-structured directory system supporting list, listall, chdir, count, and countall commands using pure polymorphism — no type checking anywhere.</p>
-          <div class="tags">
-            <span class="cat-tag cat-algo">Design Patterns</span>
-            <span class="tag">Java</span><span class="tag">Composite</span><span class="tag">Recursion</span>
           </div>
         </div>
 
@@ -983,62 +1054,8 @@
           </div>
         </div>
 
-        <div class="card" data-cat="db">
-          <p class="card-title">Sakila DVD Rental Analysis</p>
-          <p class="card-desc">Reverse-engineered the full ER diagram of a real-world DVD rental dataset and wrote optimized SQL queries for complex reporting and analysis tasks.</p>
-          <div class="tags">
-            <span class="cat-tag cat-db">Databases</span>
-            <span class="tag">SQL</span><span class="tag">Query Optimization</span><span class="tag">ER Diagrams</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="web">
-          <p class="card-title">Dessert Shop Application</p>
-          <p class="card-desc">Full OOP system with abstract base class, four subclasses, cost/tax logic, terminal UI, PDF receipt generation via ReportLab, and a complete pytest test suite.</p>
-          <div class="tags">
-            <span class="cat-tag cat-web">Web / App</span>
-            <span class="tag">Python</span><span class="tag">OOP</span><span class="tag">Testing</span><span class="tag">PDF</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="web">
-          <p class="card-title">Bank Simulation System</p>
-          <p class="card-desc">OOP banking model with users, accounts, deposit/withdraw logic, and aggregate value calculations across accounts — designed with full UML documentation of class relationships.</p>
-          <div class="tags">
-            <span class="cat-tag cat-web">Web / App</span>
-            <span class="tag">Python</span><span class="tag">OOP</span><span class="tag">UML</span><span class="tag">Finance Domain</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="web">
-          <p class="card-title">Visitor Form with JS Validation</p>
-          <p class="card-desc">Responsive Flexbox form with custom JavaScript validation, real-time DOM feedback on user input, and a mobile-friendly layout for a polished user experience.</p>
-          <div class="tags">
-            <span class="cat-tag cat-web">Web</span>
-            <span class="tag">JavaScript</span><span class="tag">CSS Flexbox</span><span class="tag">DOM</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="ai">
-          <p class="card-title">Image Processing Suite</p>
-          <p class="card-desc">Python programs applying grayscale, black & white, and sepia filters to images, plus compositing work blending separate images together using pixel-level manipulation.</p>
-          <div class="tags">
-            <span class="cat-tag cat-ai">AI / Visual</span>
-            <span class="tag">Python</span><span class="tag">Image Processing</span><span class="tag">File I/O</span>
-          </div>
-        </div>
-
-        <div class="card" data-cat="web">
-          <p class="card-title">Capstone Project</p>
-          <p class="card-desc">Full-stack JavaScript capstone application featuring complete user authentication with login and account creation flows, plus a polished multi-page interface.</p>
-          <div class="tags">
-            <span class="cat-tag cat-web">Web / App</span>
-            <span class="tag">JavaScript</span><span class="tag">Full Stack</span><span class="tag">Auth</span>
-          </div>
-          <a class="card-link" href="https://github.com/sarahholloway993/Capstone-Project" target="_blank" rel="noopener">View on GitHub →</a>
-        </div>
-
       </div>
+
     </section>
 
     <!-- SKILLS -->
@@ -1214,15 +1231,15 @@
     const CW_SYSTEM = `You are the friendly AI assistant embedded in Sarah Burtenshaw's professional portfolio website. Visitors (often recruiters or hiring managers) ask you about her. Answer warmly, concisely, and accurately, referring to Sarah as "she." Keep answers to 2-4 sentences unless asked for detail. If you don't know something, say so and suggest they email Sarah directly — never invent facts.
 
 ABOUT SARAH BURTENSHAW:
-- Current role: AI Engineer at Halo Compliance. She builds agentic AI systems for the mortgage compliance industry — including Model Context Protocol (MCP) servers connecting both Claude and ChatGPT to the platform's compliance tooling. Her work includes conversational AI agents that guide users through rule-building and compliance configuration via natural language, cloud-first AI infrastructure, AI-powered support and bug-triage workflows (including automated GitHub issue generation), and full-stack testing and validation.
-- Education: B.S. in Computer Science at Utah Valley University (UVU), graduating August 2026.
+- Current role: AI Engineer at Halo Compliance (May 2026 - present). Halo checks mortgage marketing material against regulation: a compliance officer uploads a flyer, social post or rate sheet, and Halo says what is wrong with it and why, in plain language. She works across the whole stack - the React/TypeScript app officers use, the Go services that run the checks, the Python AI agent (LangGraph + AWS Bedrock) that reads rules a compiler cannot, and the Terraform that runs it on AWS. Main areas of her work: (1) The rule compiler - turning officers' plain-English rules into executable checks: placeholder formats in natural phrasing, referenced collections of accepted values, format rules nested inside conditions, singular/plural folding, unquoted license and registration numbers, plus rename safety so a renamed rule keeps matching through an alias instead of silently going dead. (2) A Given/When/Then rule view generated from the compiler's own structure rather than a separate description that can drift, which reports unparseable rules instead of failing quietly, and a loop where the AI aide's reading is confirmed by the officer and confirmed readings become its examples. (3) The review canvas, where most of her UI work lives: entity highlighting across rule, reference and document region; a four-part finding layout (Details, Remediation, References, Proof); highlights for evidence that passed; a 16-lesson tour; and finding copy rewritten for non-technical readers. (4) Document understanding and OCR: deterministic testimonial-shape detection, tolerance for unicode homoglyphs and invisible characters, TIFF-to-PNG normalisation, measured font-size parity for disclosure-size rules, and surfacing low-confidence OCR regions. She traced a silent whole-document OCR failure to an omitempty tag stripping a 0.0 confidence score. (5) Branch and loan-officer data: a full vertical slice from tables to UI (data layer, DAO, presence checks, CRUD across API and CLI, self-serve management UI with CSV import, multiple loan officers per report, aliases) - roughly 40,000 lines. (6) A Go MCP server: 84 merged PRs, about 96 tools, letting an AI assistant read and edit the rulebook, built as a strict passthrough with no authorisation or credentials in the layer and tenant taken from the token, never tool arguments. (7) Release engineering: making the git tag the only deploy path, fixing the rules-engine deploy chain (Terraform version, state key, KMS decrypt permission, refresh reads), a production CSP blocking collateral, and a Lambda crash-looping behind a 232-byte placeholder zip. IAM policies enumerate actions with no wildcards, for SOC 2. Her work at Halo splits roughly evenly between new features and fixes, with around 240 test files written or changed. Do not lead with volume metrics such as pull-request, commit or line counts - they invite the wrong question and are not what makes her work notable. If someone asks directly about output or productivity, describe how she works and point to specific problems she solved (for example the omitempty OCR bug or the MCP passthrough design) rather than reciting counts. How she works: start from the issue rather than the code, state the root cause and the existing pattern before writing production code, ship one thin slice at a time (failing test, fix, passing test), run every change through SDLC gates that each write an evidence artifact, never skip a git hook, dogfood the product against real customer rulebooks, and never call something fixed, tested or deployed without the command output that proves it.
+- Education: B.S. in Computer Science from Utah Valley University (UVU), completed August 2026. She has graduated — do not describe her as a current student.
 - Background: 8+ years in consumer lending and finance — previously a Senior Financial Service Representative at Mountain America Credit Union, a top-ranked loan officer who trained other staff. This domain expertise is her key differentiator: she understands compliance rules, workflows, and users firsthand.
 - Tech stack: Python, TypeScript, Go, JavaScript, C, C++, SQL, Assembly, Swift. Tools: Node.js, Express, LangGraph, MCP, AWS, Docker, React, Flask, SQLite, Puppeteer, Figma, Git/GitHub.
 
 FLAGSHIP PROJECTS:
 - Themis — a real-time AI deliberation council. Five AI advisor-agents (each with its own persona) debate a user's hard question over a publish-subscribe message bus — a hand-rolled in-process bus plus an embedded, real MQTT broker (aedes) — refereed by a guarded finite state machine. Every message is recorded to an append-only SQLite event store (event sourcing) with point-in-time replay (reconstruct a council's state up to any sequence number). Built on modern Node.js 22 using native built-ins (node:sqlite and the native test runner) for a lean dependency footprint, with a pluggable LLM backend (Strategy pattern + Simple Factory) that swaps between Anthropic Claude and Ollama via one config setting — no SDKs, both integrated by hand with raw fetch. Vanilla-JS glassmorphism front-end (WebSocket live updates, Markdown, Mermaid diagrams, Chart.js). Zero-trust hardening (input sanitization, rate limiting, same-origin checks, security headers). Implements 6 Enterprise Integration Patterns and 6 design patterns (Strategy, Simple Factory, Observer, Memento, Finite State Machine, Event Sourcing). Deployed live on Render over HTTPS. Demo: themis-ul5z.onrender.com
 - Atlas — an AI résumé & job-application builder. Turns a job description plus your background into a tailored résumé PDF, cover letter, and company-fit report. Features "Henry," an AI assistant that proposes accept/reject edits and re-scores fit in real time. Built with Node/Express, SQLite, a provider-agnostic LLM backend (Claude or Ollama), and headless-Chromium PDF rendering. Uses Gang-of-Four patterns (Strategy, Decorator, Simple Factory, Memento) over a Pipes-and-Filters pipeline. Dockerized, deployed live on Render, 33 unit tests. Demo: atlas-7gw5.onrender.com
-- Minerva — an AI finance assistant. UX-driven budgeting app with expense tracking, category budgets, savings goals, and an AI helper that detects spending habits. Designed in Figma with multiple rounds of user testing; explored OpenAI and Plaid APIs.
+- Minerva — AI-assisted budgeting. This is the project Sarah considers her keystone. A personal-finance PWA built around Henry, an assistant that acts rather than comments: he flags Warnings, Forecasts, Patterns and Opportunities, splits receipts into per-category entries, proposes budget rebalances, and answers "can I afford this?" from real data. Every insight carries a "Why this?" basis, so nothing changes silently. Henry runs on a propose-approve-log contract with a server-side validateAction check, so the model's output is never trusted blindly, and it fails closed to a deterministic rules engine. Stack: React front end; Node/Express + Postgres (Neon) behind 30+ owner-scoped endpoints with schema migrations and a durable per-user audit trail. Security: passwordless passkey-only sign-in (WebAuthn), Google sign-in, and hashed one-time recovery codes; a full OWASP Top 10:2025 hardening pass; sessions as hashed 256-bit tokens in httpOnly cookies; Plaid bank linking with access tokens stored AES-256-GCM encrypted. Also: CSV and spreadsheet statement import, and an instance-based learning model that classifies recurring payees. Installable PWA with a hand-written service worker (network-first navigations, cache-first hashed assets) plus Background Sync, so expenses entered offline flush on reconnect. 596 Vitest tests across 36 files gate every deploy through a test-gated GitHub Actions pipeline. Accessibility is a first-class concern: WCAG 2.1 AA with a Lighthouse Accessibility score of 100. Note: the public demo is offline at the moment, so do not offer visitors a demo link for Minerva — invite them to email Sarah instead.
 - Plus broad CS coursework: systems programming (CPU/disk scheduling simulators, C++ multithreading with mutexes), cryptography (DES, Diffie-Hellman secure chat), algorithms (Dijkstra graphs, BSTs), databases (normalized DB design, SQL), and design patterns (Abstract Factory, Composite).
 
 PERSONALITY / WORKING STYLE:
@@ -1327,5 +1344,43 @@ Keep it professional and friendly. Don't share private personal details (family,
        callback (cwTurnstileOnload) is already defined when this runs. -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=cwTurnstileOnload&render=explicit" async defer></script>
 
+  <script>
+    // ── Theme toggle ────────────────────────────────────────────────
+    // Three states, cycled in this order:
+    //   System (no attribute) → Light → Dark → System …
+    // "System" means: follow the OS setting, which is what the CSS
+    // media query already does when no data-theme attribute is set.
+    (function () {
+      var btn = document.getElementById('themeToggle');
+      if (!btn) return;
+
+      var label = btn.querySelector('.theme-label');
+      var root = document.documentElement;
+      var ORDER = ['system', 'light', 'dark'];
+
+      function current() {
+        return root.getAttribute('data-theme') || 'system';
+      }
+
+      function apply(mode) {
+        if (mode === 'system') {
+          root.removeAttribute('data-theme');
+          try { localStorage.removeItem('theme'); } catch (e) {}
+        } else {
+          root.setAttribute('data-theme', mode);
+          try { localStorage.setItem('theme', mode); } catch (e) {}
+        }
+        if (label) label.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+        btn.setAttribute('aria-label', 'Colour theme: ' + mode + '. Click to change.');
+      }
+
+      // Sync the label with whatever the early head script already applied.
+      apply(current());
+
+      btn.addEventListener('click', function () {
+        apply(ORDER[(ORDER.indexOf(current()) + 1) % ORDER.length]);
+      });
+    })();
+  </script>
 </body>
 </html>
